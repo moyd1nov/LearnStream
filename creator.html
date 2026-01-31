@@ -1,0 +1,603 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnStream - Creator Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2a1a4e 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Liquid Glass Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+        }
+        
+        /* Header - IDENTICAL to Home Page */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-item {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+        }
+        
+        .nav-item:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3));
+            color: #ffffff;
+        }
+        
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-item:hover::after {
+            width: 80%;
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #ffffff;
+            border-radius: 3px;
+            transition: 0.3s;
+        }
+        
+        /* NEW: Creator Header Section */
+
+
+        
+        
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 0 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        /* Upload Panel */
+        .upload-panel {
+            grid-column: 1;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .upload-panel:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: none;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+
+
+transform: translateY(-2px);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        
+        .tag {
+            padding: 0.5rem 1rem;
+            background: rgba(139, 92, 246, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tag:hover, .tag.selected {
+            background: rgba(139, 92, 246, 0.5);
+            transform: scale(1.05);
+        }
+        
+        .btn-primary {
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            border: none;
+            border-radius: 20px;
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.6);
+        }
+        
+        /* Tutorials Grid */
+        .tutorials-grid {
+            grid-column: 2;
+            padding: 2.5rem;
+            max-height: 600px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.2) transparent;
+        }
+        
+        .tutorials-grid::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .tutorials-grid::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+        
+        .tutorials-grid::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+        }
+        
+        .tutorial-card {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+        }
+        
+        .tutorial-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .tutorial-info h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .tutorial-info p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .btn-small {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-edit { background: rgba(34, 197, 94, 0.3); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.5); }
+        .btn-delete { background: rgba(239, 68, 68, 0.3); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.5); }
+
+
+.btn-preview { background: rgba(59, 130, 246, 0.3); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.5); }
+        
+        /* Analytics Panel */
+        .analytics-panel {
+            grid-column: 1 / -1;
+            padding: 2.5rem;
+            margin-top: 2rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 4rem;
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-menu { display: none; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .main-content { padding: 1rem 2rem; }
+            .creator-header { padding: 2rem 1.5rem; margin-top: 100px; }
+            .creator-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+        .main-content{
+            margin-top: 150px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header - PERFECT MATCH with Home Page -->
+    <header class="header">
+        <div class="logo">LearnStream</div>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-item">Home</a></li>
+                <li><a href="search.html" class="nav-item">Search</a></li>
+                <li><a href="library.html" class="nav-item">Library</a></li>
+                <li><a href="creator.html" class="nav-item active">Creator</a></li>
+                <li><a href="profile.html" class="nav-item">Profile</a></li>
+                <li><a href="logout.html" class="nav-item">Logout</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- NEW: Creator Header Section -->
+    <section class="creator-header glass">
+
+    </section>
+
+<!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-grid">
+            <!-- Upload Tutorial Panel -->
+            <div class="upload-panel glass">
+                <h2 class="section-title">📤 Upload New Tutorial</h2>
+                <form id="uploadForm">
+                    <div class="form-group">
+                        <label>YouTube URL</label>
+                        <input type="url" class="form-input" placeholder="https://youtube.com/watch?v=..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Course Title</label>
+                        <input type="text" class="form-input" placeholder="Enter course title..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Short Description</label>
+                        <textarea class="form-input" rows="3" placeholder="Brief description of the tutorial..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Tags</label>
+                        <div class="tags-container">
+                            <span class="tag" onclick="toggleTag(this)">React</span>
+                            <span class="tag" onclick="toggleTag(this)">JavaScript</span>
+                            <span class="tag" onclick="toggleTag(this)">Beginner</span>
+                            <span class="tag" onclick="toggleTag(this)">Web Development</span>
+                            <span class="tag" onclick="toggleTag(this)">Advanced</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">🚀 Add Tutorial</button>
+                </form>
+            </div>
+
+            <!-- Uploaded Tutorials -->
+            <div class="tutorials-grid glass">
+                <h2 class="section-title">📚 Your Tutorials</h2>
+                <div id="tutorialsList"></div>
+            </div>
+        </div>
+
+        <!-- Analytics Panel -->
+        <div class="analytics-panel glass">
+            <h2 class="section-title">📊 Analytics Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" data-target="12456">0</div>
+                    <div class="stat-label">Total Views</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="4.8">0</div>
+                    <div class="stat-label">Avg Rating</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="289">0</div>
+                    <div class="stat-label">Comments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="87">0</div>
+                    <div class="stat-label">Completion %</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer glass">
+        <ul class="footer-links">
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Privacy</a></li>
+        </ul>
+        <p>© 2026 LearnStream. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Sample data
+        let tutorials = [
+            {id: 1, title: "React Hooks Complete Guide", description: "Master React Hooks...", tags: ["React", "JavaScript"], thumbnail: "🎣"},
+            {id: 2, title: "Node.js REST APIs", description: "Production-ready APIs...", tags: ["Node.js", "API"], thumbnail: "🔗"}
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTutorials();
+            animateStats();
+            document.getElementById('hamburger').addEventListener('click', function() {
+                document.querySelector('.nav-menu').classList.toggle('active');
+            });
+        });
+
+
+// Form handling
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const newTutorial = {
+                id: Date.now(),
+                title: this.querySelector('input[placeholder*="title"]').value,
+                description: this.querySelector('textarea').value || 'No description',
+                tags: Array.from(document.querySelectorAll('.tag.selected')).map(tag => tag.textContent.trim()),
+                thumbnail: "📹"
+            };
+            tutorials.unshift(newTutorial);
+            renderTutorials();
+            this.reset();
+            document.querySelectorAll('.tag').forEach(tag => tag.classList.remove('selected'));
+        });
+
+        function renderTutorials() {
+            document.getElementById('tutorialsList').innerHTML = tutorials.map(t => 
+                <div class="tutorial-card glass">
+                    <div class="thumbnail">${t.thumbnail}</div>
+                    <div class="tutorial-info" style="flex:1">
+                        <h4>${t.title}</h4>
+                        <p>${t.description}</p>
+                        <div class="tags-container">${t.tags.map(tag => <span class="tag">${tag}</span>).join('')}</div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-small btn-edit">✏️ Edit</button>
+                        <button class="btn-small btn-delete" onclick="deleteTutorial(${t.id})">🗑️ Delete</button>
+                        <button class="btn-small btn-preview">👁️ Preview</button>
+                    </div>
+                </div>
+            ).join('');
+        }
+
+        function toggleTag(tag) { tag.classList.toggle('selected'); }
+
+        function deleteTutorial(id) {
+            if (confirm('Delete?')) {
+                tutorials = tutorials.filter(t => t.id !== id);
+                renderTutorials();
+            }
+        }
+
+        function animateStats() {
+            document.querySelectorAll('.stat-number').forEach(stat => {
+                const target = parseFloat(stat.dataset.target);
+                let current = 0;
+                const timer = setInterval(() => {
+                    current += target / 50;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.floor(current) + (target % 1 ? '.0' : '');
+                }, 30);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnStream - Search Tutorials</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2a1a4e 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Liquid Glass Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+        }
+        
+        /* Header - IDENTICAL to Home/Creator */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-item {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+        }
+        
+        .nav-item:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3));
+            color: #ffffff;
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #ffffff;
+            border-radius: 3px;
+            transition: 0.3s;
+        }
+        
+        /* Search Page Hero */
+        .search-hero {
+            margin-top: 120px;
+            padding: 4rem 5%;
+            text-align: center;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .search-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .search-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .search-input-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1.5rem 6rem 1.5rem 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: #ffffff;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .search-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            border: none;
+            border-radius: 50px;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+        }
+        
+        /* Filters Section */
+        .filters-section {
+            padding: 3rem 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .filters-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+        
+        /* Results Info */
+        .results-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .results-count {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Results Grid */
+        .results-grid {
+            padding: 0 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .tutorial-card {
+            height: 280px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .tutorial-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .tutorial-image {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 20px 20px 0 0;
+            transition: transform 0.4s ease;
+        }
+        
+        .tutorial-card:hover .tutorial-image {
+            transform: scale(1.05);
+        }
+        
+        .tutorial-info {
+            padding: 1.75rem;
+            height: 110px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tutorial-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #ffffff;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .tutorial-desc {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .tutorial-tags {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            padding: 0.4rem 1rem;
+            background: rgba(139, 92, 246, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+        
+        .tag:hover {
+            background: rgba(139, 92, 246, 0.5);
+            transform: scale(1.05);
+        }
+        
+        .tutorial-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.5rem;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            opacity: 0.5;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 6rem;
+            padding: 3rem 5% 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            list-style: none;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+        }
+        
+        .footer-links a:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-menu { display: none; }
+            .filters-container { flex-direction: column; align-items: center; }
+            .results-grid { grid-template-columns: 1fr; padding: 0 2rem; }
+            .search-hero { padding: 2rem 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header - PERFECT MATCH -->
+    <header class="header">
+        <div class="logo">LearnStream</div>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-item">Home</a></li>
+                <li><a href="search.html" class="nav-item active">Search</a></li>
+                <li><a href="library.html" class="nav-item">Library</a></li>
+                <li><a href="creator.html" class="nav-item">Creator</a></li>
+                <li><a href="profile.html" class="nav-item">Profile</a></li>
+                <li><a href="logout.html" class="nav-item">Logout</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Search Hero -->
+    <section class="search-hero">
+        <h1 class="search-title">🔍 Find Perfect Tutorials</h1>
+        <p class="search-subtitle">Search 50K+ tutorials by topic, skill level, language, and creator</p>
+        <div class="search-input-container">
+            <input type="text" class="search-input" placeholder="Search tutorials (React, Python, Figma, etc.)..." id="searchInput">
+            <button class="search-btn" onclick="performSearch()">🔍</button>
+        </div>
+    </section>
+
+    <!-- Filters & Results -->
+    <section class="filters-section">
+        <div class="filters-container">
+            <button class="filter-btn active" data-filter="all">All Results</button>
+            <button class="filter-btn" data-filter="tech">Tech</button>
+            <button class="filter-btn" data-filter="design">Design</button>
+            <button class="filter-btn" data-filter="business">Business</button>
+            <button class="filter-btn" data-filter="beginner">Beginner</button>
+            <button class="filter-btn" data-filter="intermediate">Intermediate</button>
+            <button class="filter-btn" data-filter="advanced">Advanced</button>
+        </div>
+        
+        <div class="results-info">
+            <div class="results-count" id="resultsCount">1,247 tutorials found</div>
+        </div>
+        
+        <div class="results-grid" id="resultsGrid">
+            <!-- Dynamic results here -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer glass">
+        <ul class="footer-links">
+            <li><a href="#">About LearnStream</a></li>
+            <li><a href="#">For Creators</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.95rem;">© 2026 LearnStream. Built for creators and learners. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Sample tutorial data
+        const allTutorials = [
+            {id: 1, title: "Complete React Masterclass 2026", desc: "Hooks, Context, Performance + Real Projects", tags: ["React", "JavaScript", "Intermediate"], img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkC-DbYCYasBm_KHbMyP5sk5-tweGdtUy8Dw&s", views: "12.4K", creator: "Sarah Johnson"},
+            {id: 2, title: "Python Data Science Bootcamp", desc: "Pandas, NumPy, ML Projects + Deployment", tags: ["Python", "Data Science", "Intermediate"], img: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&fit=crop&w=500&q=80", views: "8.7K", creator: "Mike Chen"},
+            {id: 3, title: "Figma UI/UX Design Complete Guide", desc: "Prototyping, Auto Layout, Components", tags: ["Figma", "Design", "Beginner"], img: "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?ixlib=rb-4.0.3&fit=crop&w=500&q=80", views: "15.2K", creator: "Emma Davis"},
+            {id: 4, title: "Node.js REST API Masterclass", desc: "Express, Auth, MongoDB, Deployment", tags: ["Node.js", "API", "Advanced"], img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&fit=crop&w=500&q=80", views: "9.1K", creator: "Alex Rivera"},
+            {id: 5, title: "Tailwind CSS Advanced", desc: "Custom Config, Plugins, Performance", tags: ["Tailwind", "CSS", "Intermediate"], img: "data:image/jpeg;base64,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", views: "6.8K", creator: "Lisa Wong"},
+            {id: 6, title: "Next.js 14 Full Course", desc: "App Router, Server Components, Auth", tags: ["Next.js", "React", "Advanced"], img: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&fit=crop&w=500&q=80", views: "18.5K", creator: "David Kim"},
+        ];
+
+        let currentResults = [...allTutorials];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderResults();
+            setupFilters();
+            setupMobileMenu();
+            document.getElementById('searchInput').focus();
+        });
+
+        function renderResults() {
+            const container = document.getElementById('resultsGrid');
+            const count = currentResults.length;
+            
+            document.getElementById('resultsCount').textContent = 
+                count === 1 ? `${count} tutorial found` : `${count} tutorials found`;
+            
+            if (count === 0) {
+                container.innerHTML = `
+                    <div class="empty-state glass">
+                        <div class="empty-icon">🔍</div>
+                        <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">No tutorials found</h3>
+                        <p style="color: rgba(255,255,255,0.7); max-width: 400px; margin: 0 auto;">
+                            Try different keywords or filters. We have 50K+ tutorials across all topics!
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = currentResults.map(t => `
+                <div class="tutorial-card glass" onclick="openTutorial(${t.id})">
+                    <img src="${t.img}" alt="${t.title}" class="tutorial-image">
+                    <div class="tutorial-info">
+                        <div class="tutorial-title">${t.title}</div>
+                        <div class="tutorial-desc">${t.desc}</div>
+                        <div class="tutorial-tags">
+                            ${t.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <div class="tutorial-meta">
+                            <span>👁️ ${t.views} views</span>
+                            <span>by ${t.creator}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setupFilters() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const filter = btn.dataset.filter;
+                    if (filter === 'all') {
+                        currentResults = [...allTutorials];
+                    } else {
+                        currentResults = allTutorials.filter(t => 
+                            t.tags.some(tag => tag.toLowerCase().includes(filter))
+                        );
+                    }
+                    renderResults();
+                });
+            });
+        }
+
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (query) {
+                currentResults = allTutorials.filter(t => 
+                    t.title.toLowerCase().includes(query) ||
+                    t.desc.toLowerCase().includes(query) ||
+                    t.tags.some(tag => tag.toLowerCase().includes(query))
+                );
+                renderResults();
+            }
+        }
+
+        // Search on Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        function openTutorial(id) {
+            // Simulate opening tutorial
+            alert(`Opening tutorial ${id} - Connect to your backend here!`);
+        }
+
+        function setupMobileMenu() {
+            document.getElementById('hamburger').addEventListener('click', function() {
+                document.querySelector('.nav-menu').classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>

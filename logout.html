@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnStream - See You Soon!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2a1a4e 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        /* Liquid Glass Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 25px 60px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-radius: 32px;
+            padding: 4rem 3rem;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s;
+        }
+        
+        .glass:hover::before {
+            left: 100%;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Header - PERFECT MATCH */
+        .header {
+            position: absolute;
+            top: 2rem;
+            left: 5%;
+            right: 5%;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+        
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Logout Content */
+        .logout-icon {
+            font-size: 6rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 10px 20px rgba(139, 92, 246, 0.3));
+        }
+        
+        .logout-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, rgba(255,255,255,0.9));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .logout-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+        
+        .logout-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            padding: 1.25rem 3rem;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            border: none;
+            border-radius: 50px;
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.4);
+            text-decoration: none;
+            margin: 0.5rem;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 50px rgba(139, 92, 246, 0.6);
+        }
+        
+        .btn-secondary {
+            padding: 1.25rem 3rem;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            margin: 0.5rem;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.2);
+        }
+        
+        .countdown {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header { position: static; margin-bottom: 2rem; left: 2rem; right: 2rem; }
+            .glass { padding: 3rem 2rem; margin: 1rem; }
+            .logout-title { font-size: 2.2rem; }
+            .logout-stats { grid-template-columns: repeat(2, 1fr); }
+            body { padding: 1rem; }
+        }
+        
+        @keyframes fadeOut {
+            to { opacity: 0; transform: scale(0.95); }
+        }
+        
+        .fade-out {
+            animation: fadeOut 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header glass">
+        <div class="logo">LearnStream</div>
+    </header>
+
+    <!-- Main Logout Content -->
+    <div class="glass">
+        <div class="logout-icon">👋</div>
+        <h1 class="logout-title">You're Logged Out!</h1>
+        <p class="logout-subtitle">
+            Thanks for learning with LearnStream today. Come back tomorrow to continue your journey!
+        </p>
+        
+        <div class="logout-stats">
+            <div class="stat-item">
+                <div class="stat-number" data-target="24">24</div>
+                <div class="stat-label">Courses Today</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="2h">0h</div>
+                <div class="stat-label">Learning Time</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="92">0</div>
+                <div class="stat-label">Progress</div>
+            </div>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+            <a href="index.html" class="btn-primary" id="homeBtn">🏠 Return Home</a>
+            <a href="login.html" class="btn-secondary">🔐 Log Back In</a>
+        </div>
+        
+        <div class="countdown" id="countdown">
+            Redirecting to Home in <span id="countdownNum">5</span> seconds...
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="margin-top: 3rem; text-align: center; opacity: 0.6;">
+        <p style="font-size: 0.9rem;">© 2026 LearnStream. Safe travels! 🌟</p>
+    </footer>
+
+    <script>
+        // Animate stats
+        function animateStats() {
+            document.querySelectorAll('.stat-number').forEach(stat => {
+                const target = stat.dataset.target;
+                let current = 0;
+                const duration = 1500;
+                const increment = target === '2h' ? 0.02 : target / (duration / 16);
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= parseFloat(target) || (target === '2h' && current >= 2)) {
+                        stat.textContent = target;
+                        clearInterval(timer);
+                        return;
+                    }
+                    if (target === '2h') {
+                        stat.textContent = Math.floor(current) + 'h';
+                    } else {
+                        stat.textContent = Math.floor(current);
+                    }
+                }, 16);
+            });
+        }
+
+        // Countdown & auto-redirect
+        let countdown = 5;
+        const countdownEl = document.getElementById('countdownNum');
+        
+        const countdownTimer = setInterval(() => {
+            countdown--;
+            countdownEl.textContent = countdown;
+            
+            if (countdown <= 0) {
+                clearInterval(countdownTimer);
+                window.location.href = 'index.html';
+            }
+        }, 1000);
+
+        // Manual redirect override
+        document.getElementById('homeBtn').addEventListener('click', function(e) {
+            clearInterval(countdownTimer);
+            document.body.classList.add('fade-out');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 500);
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            animateStats();
+        });
+    </script>
+</body>
+</html>

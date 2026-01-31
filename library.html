@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnStream - My Library</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2a1a4e 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Liquid Glass Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+        }
+        
+        /* Header - PERFECT MATCH */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-item {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+        }
+        
+        .nav-item:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3));
+            color: #ffffff;
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #ffffff;
+            border-radius: 3px;
+            transition: 0.3s;
+        }
+        
+        /* Library Hero */
+        .library-hero {
+            margin-top: 120px;
+            padding: 4rem 5%;
+            text-align: center;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .library-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .library-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .library-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+        
+        /* Tabs Section */
+        .tabs-section {
+            padding: 0 5%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 3rem;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .tab-btn:hover, .tab-btn.active {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+        
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+        }
+        
+        .tutorial-card {
+            height: 320px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .tutorial-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .tutorial-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 20px 20px 0 0;
+            transition: transform 0.4s ease;
+        }
+        
+        .tutorial-card:hover .tutorial-image {
+            transform: scale(1.05);
+        }
+        
+        .tutorial-info {
+            padding: 1.75rem;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tutorial-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+        
+        .tutorial-desc {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        
+        .tutorial-progress {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.85rem;
+            font-weight: 500;
+            min-width: 40px;
+        }
+        
+        .tutorial-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .tag {
+            padding: 0.25rem 0.75rem;
+            background: rgba(139, 92, 246, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            border-radius: 15px;
+            font-size: 0.75rem;
+            color: #ffffff;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 6rem 2rem;
+            grid-column: 1 / -1;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 6rem;
+            padding: 3rem 5% 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            list-style: none;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+        }
+        
+        .footer-links a:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-menu { display: none; }
+            .content-grid { grid-template-columns: 1fr; }
+            .library-hero { padding: 2rem 2rem; }
+            .tab-buttons { flex-direction: column; align-items: center; }
+            .library-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header - PERFECT MATCH -->
+    <header class="header">
+        <div class="logo">LearnStream</div>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-item">Home</a></li>
+                <li><a href="search.html" class="nav-item">Search</a></li>
+                <li><a href="library.html" class="nav-item active">Library</a></li>
+                <li><a href="creator.html" class="nav-item">Creator</a></li>
+                <li><a href="profile.html" class="nav-item">Profile</a></li>
+                <li><a href="logout.html" class="nav-item">Logout</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Library Hero -->
+    <section class="library-hero glass">
+        <h1 class="library-title">📚 My Learning Library</h1>
+        <p class="library-subtitle">Track your progress, organize saved tutorials, and continue learning where you left off</p>
+        
+        <div class="library-stats">
+            <div class="stat-card">
+                <div class="stat-number" data-target="12">0</div>
+                <div class="stat-label">Courses in Progress</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="8">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="24">0</div>
+                <div class="stat-label">Total Hours</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="92">0</div>
+                <div class="stat-label">Completion %</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabs & Content -->
+    <section class="tabs-section">
+        <div class="tab-buttons">
+            <button class="tab-btn active" data-tab="in-progress">In Progress</button>
+            <button class="tab-btn" data-tab="completed">Completed</button>
+            <button class="tab-btn" data-tab="saved">Saved</button>
+            <button class="tab-btn" data-tab="bookmarks">Bookmarks</button>
+        </div>
+        
+        <div class="content-grid" id="libraryContent">
+            <!-- Dynamic content here -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer glass">
+        <ul class="footer-links">
+            <li><a href="#">About LearnStream</a></li>
+            <li><a href="#">For Creators</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.95rem;">© 2026 LearnStream. Built for creators and learners. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Sample library data
+        const libraryData = {
+            'in-progress': [
+                {id: 1, title: "Complete React Masterclass", desc: "Currently on lesson 5/12", progress: 42, img: "https://images.unsplash.com/photo-1524178232363-933d95f6836d?ixlib=rb-4.0.3&fit=crop&w=500&q=80", tags: ["React", "Intermediate"]},
+                {id: 2, title: "Python Data Science Bootcamp", desc: "Pandas & NumPy basics", progress: 28, img: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&fit=crop&w=500&q=80", tags: ["Python", "Beginner"]},
+                {id: 3, title: "Node.js REST API Masterclass", desc: "Authentication module", progress: 65, img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&fit=crop&w=500&q=80", tags: ["Node.js", "Advanced"]}
+            ],
+            'completed': [
+                {id: 4, title: "Figma UI/UX Design Complete", desc: "Prototyping completed ✓", progress: 100, img: "https://images.unsplash.com/photo-1517433456452-f9633a875f6f?ixlib=rb-4.0.3&fit=crop&w=500&q=80", tags: ["Figma", "Design"]},
+                {id: 5, title: "Tailwind CSS Advanced", desc: "Full course completed ✓", progress: 100, img: "https://images.unsplash.com/photo-1547658719-da2b848c1f07?ixlib=rb-4.0.3&fit=crop&w=500&q=80", tags: ["CSS", "Tailwind"]}
+            ],
+            'saved': [
+                {id: 6, title: "Next.js 14 Full Course", desc: "Saved for later", progress: 0, img: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&fit=crop&w=500&q=80", tags: ["Next.js", "React"]},
+                {id: 7, title: "Docker for Developers", desc: "Saved from search", progress: 0, img: "https://images.unsplash.com/photo-1614075819137-46b8d3aab688?ixlib=rb-4.0.3&fit=crop&w=500&q=80", tags: ["Docker", "DevOps"]}
+            ],
+            'bookmarks': [
+                {id: 8, title: "Advanced TypeScript Patterns", desc: "Bookmarked by creator", progress: 15, img: "https://images.unsplash.com/photo-1524178232363-933d95f6836d?ixlib=rb-4.0.3&fit=crop&w=500&q=80", tags: ["TypeScript", "Advanced"]}
+            ]
+        };
+
+        let currentTab = 'in-progress';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderContent();
+            setupTabs();
+            setupMobileMenu();
+            animateStats();
+        });
+
+        function renderContent() {
+            const container = document.getElementById('libraryContent');
+            const tutorials = libraryData[currentTab];
+            
+            if (tutorials.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state glass">
+                        <div style="font-size: 4rem; margin-bottom: 2rem;">📚</div>
+                        <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Nothing here yet</h3>
+                        <p style="color: rgba(255,255,255,0.7); max-width: 400px; margin: 0 auto 2rem;">
+                            ${currentTab === 'in-progress' ? 'Start a course to see it here.' : 
+                              currentTab === 'completed' ? 'Complete your first course!' :
+                              currentTab === 'saved' ? 'Save tutorials from search results.' :
+                              'Create bookmarks from your favorite creators.'}
+                        </p>
+                        <button class="tab-btn" onclick="window.location.href='search.html'">Find Courses</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = tutorials.map(t => `
+                <div class="tutorial-card glass" onclick="openTutorial(${t.id})">
+                    <img src="${t.img}" alt="${t.title}" class="tutorial-image">
+                    <div class="tutorial-info">
+                        <div class="tutorial-title">${t.title}</div>
+                        <div class="tutorial-desc">${t.desc}</div>
+                        <div class="tutorial-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${t.progress}%"></div>
+                            </div>
+                            <span class="progress-text">${t.progress}%</span>
+                        </div>
+                        <div class="tutorial-tags">
+                            ${t.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setupTabs() {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentTab = btn.dataset.tab;
+                    renderContent();
+                });
+            });
+        }
+
+        function openTutorial(id) {
+            alert(`Continuing tutorial ${id} - Connect to your backend here!`);
+        }
+
+        function setupMobileMenu() {
+            document.getElementById('hamburger').addEventListener('click', function() {
+                document.querySelector('.nav-menu').classList.toggle('active');
+            });
+        }
+
+        function animateStats() {
+            document.querySelectorAll('.stat-number').forEach(stat => {
+                const target = parseInt(stat.dataset.target);
+                let current = 0;
+                const duration = 2000;
+                const increment = target / (duration / 16);
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    stat.textContent = Math.floor(current);
+                }, 16);
+            });
+        }
+    </script>
+</body>
+</html>
